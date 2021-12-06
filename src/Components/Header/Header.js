@@ -20,8 +20,8 @@ const Header = () => {
                         <Nav className="me-auto">
                         </Nav>
                         <Nav>
-                            <NavLink exact to="/" className="textDec" style={{color:"white",fontSize:"18px",paddingRight:"20px",textDecoration:"none"}} className="NavLink">Burger Builder</NavLink>
-                            <NavLink exact to="/orders" className="textDec" style={{color:"white",fontSize:"18px",textDecoration:"none"}} className="NavLink">Orders</NavLink>
+                            <NavLink exact to="/" className="textDec" activeStyle={{color:"wheat"}} style={{color:"white",fontSize:"18px",paddingRight:"20px",textDecoration:"none"}} className="NavLink">Burger Builder</NavLink>
+                            <NavLink exact to="/orders" className="textDec" activeStyle={{color:"wheat"}}  style={{color:"white",fontSize:"18px",textDecoration:"none"}} className="NavLink">Orders</NavLink>
 
 
                         </Nav>

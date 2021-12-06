@@ -3,29 +3,32 @@ import Burger from "./Burger/Burger";
 import Controls from "./Controls/Controls";
 import { Modal, ModalBody, ModalHeader, ModalFooter, Button } from 'reactstrap';
 import Summary from "./Summary/Summary";
+import {connect} from "react-redux";
 
+import {addIngredient,removeIngredient,updatePurchasable} from "../../Redux/ActionCreators";
 
-const INGREDIENT_PRICES ={
-    salad:10,
-    cheese:20,
-    meat:50
+const mapStateToProps=state=>{
+    return{
+        ingredients:state.ingredients,
+        totalPrice:state.totalPrice,
+        purchasable: state.purchasable,
+    }
 }
 
-
+const mapDispatchToProps=dispatch=>{
+    return{
+        addIngredient:(igtype)=>dispatch(addIngredient(igtype)),
+        removeIngredient:(igtype)=>dispatch(removeIngredient(igtype)),
+        updatePurchasable:()=>dispatch(updatePurchasable()),
+    }
+}
 
 
 class BurgerBuilder extends Component {
     constructor() {
         super();
         this.state={
-            ingredients:[
-                {type:"salad",amount:0},
-                {type:"cheese",amount:0},
-                {type:"meat",amount:0},
-            ],
-            totalPrice:80,
             modalOpen: false,
-            purchasable: false,
         }
     }
 
@@ -41,39 +44,17 @@ class BurgerBuilder extends Component {
         this.props.history.push('/checkout');
     };
 
-    updatePurchasable = ingredients => {
-        const sum = ingredients.reduce((sum, element) => {
-            return sum + element.amount;
-        }, 0);
-        this.setState({ purchasable: sum > 0 })
-    }
 
     addIngredientHandle=(type)=>{
-       const ingredients=[...this.state.ingredients];
-       const newPrice=this.state.totalPrice +INGREDIENT_PRICES[type]
-       for (let item of ingredients){
-           if (item.type===type){
-               item.amount++;
-           }
-       }
-       this.setState({ingredients:ingredients,totalPrice:newPrice})
-        this.updatePurchasable(ingredients);
+
+        this.props.addIngredient(type)
+        this.props.updatePurchasable();
     }
 
     removeIngredientHandle=(type)=>{
-        const ingredients=[...this.state.ingredients];
-        const newPrice=this.state.totalPrice -INGREDIENT_PRICES[type]
-        for (let item of ingredients){
-            if (item.type===type){
-                if (item.amount<=0){
-                    return ;
-                }else {
-                    item.amount--;
-                }
-            }
-        }
-        this.setState({ingredients:ingredients,totalPrice:newPrice})
-        this.updatePurchasable(ingredients);
+
+        this.props.removeIngredient(type)
+        this.props.updatePurchasable();
     }
 
 
@@ -82,25 +63,25 @@ class BurgerBuilder extends Component {
         return (
            <div>
                <div className="d-flex flex-md-row flex-column " style={{marginTop:"20px"}}>
-                   <Burger  ingredients={this.state.ingredients}/>
+                   <Burger  ingredients={this.props.ingredients}/>
                    <Controls
                        addIngredientHandle={this.addIngredientHandle}
                        removeIngredientHandle={this.removeIngredientHandle}
-                       price={this.state.totalPrice}
+                       price={this.props.totalPrice}
                        toggleModal={this.toggleModal}
-                       purchasable={this.state.purchasable}
+                       purchasable={this.props.purchasable}
                    />
                </div>
 
                <Modal isOpen={this.state.modalOpen}>
                    <ModalHeader>Your Order Summary</ModalHeader>
                    <ModalBody>
-                       <h5>Total Price: {this.state.totalPrice.toFixed(0)} BDT</h5>
-                       <Summary ingredients={this.state.ingredients}/>
+                       <h5>Total Price: {this.props.totalPrice.toFixed(0)} BDT</h5>
+                       <Summary ingredients={this.props.ingredients}/>
                    </ModalBody>
                    <ModalFooter>
                        <Button color="success" onClick={this.handleCheckout}>Continue to Checkout</Button>
-                       <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+                       <Button style={{ backgroundColor:"#D70F64"}} onClick={this.toggleModal}>Cancel</Button>
                    </ModalFooter>
                </Modal>
 
@@ -113,4 +94,4 @@ class BurgerBuilder extends Component {
 
 
 
-export default BurgerBuilder;
+export default connect(mapStateToProps,mapDispatchToProps) (BurgerBuilder);
