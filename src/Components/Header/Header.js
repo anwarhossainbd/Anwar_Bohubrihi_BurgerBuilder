@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
-import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
+
+import {Container, Nav, Navbar} from "react-bootstrap";
 import Logo from "../../Assets/logo.png";
 import { NavLink } from 'react-router-dom';
 import "../Header/Header.css"
+import {connect} from "react-redux";
 
 
 const Header = () => {
@@ -21,7 +22,8 @@ const Header = () => {
                         </Nav>
                         <Nav>
                             <NavLink exact to="/" className="textDec" activeStyle={{color:"wheat"}} style={{color:"white",fontSize:"18px",paddingRight:"20px",textDecoration:"none"}} className="NavLink">Burger Builder</NavLink>
-                            <NavLink exact to="/orders" className="textDec" activeStyle={{color:"wheat"}}  style={{color:"white",fontSize:"18px",textDecoration:"none"}} className="NavLink">Orders</NavLink>
+                            <NavLink exact to="/orders" className="textDec" activeStyle={{color:"wheat"}}  style={{color:"white",fontSize:"18px",textDecoration:"none",paddingRight:"20px"}} className="NavLink">Orders</NavLink>
+                            <NavLink exact to="/login" className="textDec" activeStyle={{color:"wheat"}}  style={{color:"white",fontSize:"18px",textDecoration:"none"}} className="NavLink">Login</NavLink>
 
 
                         </Nav>
@@ -33,4 +35,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default connect() (Header);

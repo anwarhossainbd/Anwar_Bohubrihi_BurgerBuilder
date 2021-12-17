@@ -1,4 +1,5 @@
 import * as ActionTypes from "./ActionTypes";
+import axios from "axios";
 
 export const addIngredient=igtype=>{
     return{
@@ -19,3 +20,41 @@ export const updatePurchasable =()=>{
         type:ActionTypes.UPDATE_PURCHASABLE
     }
 }
+
+export const resetIngredients=()=>{
+    return{
+        type:ActionTypes.RESET_INGREDIENTS
+    }
+}
+
+
+export const loadOrders=orders=>{
+    return{
+        type:ActionTypes.LOAD_ORDERS,
+        payload:orders,
+    }
+}
+
+export const orderLoadFailed =()=>{
+    return{
+        type:ActionTypes.ORDER_LOAD_FAILED
+    }
+}
+
+export const fetchOrder=()=>dispatch=>{
+    axios.get("https://burgerbuilder-a780d-default-rtdb.firebaseio.com/orders.json")
+        .then(response=>{
+            dispatch(loadOrders(response.data));
+        })
+        .catch(error=>{
+            dispatch(orderLoadFailed())
+        })
+}
+
+
+
+
+
+
+
+
