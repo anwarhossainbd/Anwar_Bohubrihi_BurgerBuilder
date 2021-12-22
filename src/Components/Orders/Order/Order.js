@@ -12,7 +12,7 @@ const Order = (props) => {
         )
     })
     return (
-        <div  className="mt-5" style={{
+        <div  className="mt-5 col-8 offset-2" style={{
             border:"1px solid grey",
             boxShadow:"1px 1px #888888",
             borderRadius:"5px",
