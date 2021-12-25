@@ -20,6 +20,8 @@ const INITIAL_STATE ={
     purchasable: false,
     token:null,
     userId:null,
+    authLoading:false,
+    authFailedMsg:null,
 }
 
 export const Reducer=(state=INITIAL_STATE,action)=>{
@@ -109,6 +111,26 @@ export const Reducer=(state=INITIAL_STATE,action)=>{
                 ...state,
                 token: action.payload.token,
                 userId: action.payload.userId,
+            }
+
+        case ActionTypes.AUTH_LOGOUT:
+            return {
+                ...state,
+                authFailedMsg: null,
+                token: null,
+                userId: null,
+            }
+
+        case ActionTypes.AUTH_LOADING:
+            return {
+                ...state,
+                authLoading: action.payload
+            }
+
+        case ActionTypes.AUTH_FAILED:
+            return {
+                ...state,
+                authFailedMsg: action.payload,
             }
 
         default: return state ;

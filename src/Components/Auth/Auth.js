@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Formik} from "formik";
-import {Button} from "reactstrap";
+import {Alert, Button} from "reactstrap";
 import {auth} from "../../Redux/AuthActionCreators";
 import {connect} from "react-redux";
+import Spinner from "../Spinner/Spinner";
+
 
 const mapDispatchToProps=dispatch=>{
 
@@ -10,6 +12,13 @@ const mapDispatchToProps=dispatch=>{
         auth:(email,password,mode)=>dispatch(auth(email,password,mode))
     }
 }
+const mapStateToProps=state=>{
+    return{
+        authLoading: state.authLoading,
+        authFailedMsg: state.authFailedMsg
+    }
+}
+
 class Auth extends Component {
 
     constructor() {
@@ -29,8 +38,22 @@ class Auth extends Component {
 
 
     render() {
-        return (
-            <div className="mt-5">
+        let err=null;
+        if (this.props.authFailedMsg !==null){
+            err=
+
+                 <Alert color="danger">{this.props.authFailedMsg}</Alert>
+        }
+
+
+
+        let form =null;
+
+        if (this.props.authLoading){
+            form=<Spinner />
+        }else {
+            form=(
+
                 <Formik initialValues={
                     {
                         email:"",
@@ -89,11 +112,11 @@ class Auth extends Component {
                             <span style={{ color: "red" }}>{errors.password}</span>
                             <br/>
                             {this.state.mode==="Sign Up"?
-                            <div>
-                                <input name="passwordConfirm" placeholder="Enter Your Confirm password " className="form-control" value={values.passwordConfirm} onChange={handleChange} />
-                                <span style={{ color: "red" }}>{errors.passwordConfirm}</span>
-                                <br/>
-                            </div>:null
+                                <div>
+                                    <input name="passwordConfirm" placeholder="Enter Your Confirm password " className="form-control" value={values.passwordConfirm} onChange={handleChange} />
+                                    <span style={{ color: "red" }}>{errors.passwordConfirm}</span>
+                                    <br/>
+                                </div>:null
                             }
 
                             <Button type="submit" className="btn-success">{this.state.mode==="Sign Up"?"Sign Up":"Login"}</Button>
@@ -103,9 +126,20 @@ class Auth extends Component {
                     }
 
                 </Formik>
+
+            )
+        }
+
+
+        return (
+            <div className="mt-5">
+              <div className="col-6 offset-3">
+                  {err}
+              </div>
+                {form}
             </div>
         );
     }
 }
 
-export default  connect(null,mapDispatchToProps) (Auth);
+export default  connect(mapStateToProps,mapDispatchToProps) (Auth);

@@ -24,6 +24,8 @@ const Header = (props) => {
         links=<div>
             <NavLink exact to="/" className="textDec" activeStyle={{color:"wheat"}} style={{color:"white",fontSize:"18px",paddingRight:"20px",textDecoration:"none"}} className="NavLink">Burger Builder</NavLink>
             <NavLink exact to="/orders" className="textDec" activeStyle={{color:"wheat"}}  style={{color:"white",fontSize:"18px",textDecoration:"none",paddingRight:"20px"}} className="NavLink">Orders</NavLink>
+            <NavLink exact to="/logout" className="textDec" activeStyle={{color:"wheat"}}  style={{color:"white",fontSize:"18px",textDecoration:"none",paddingRight:"20px"}} className="NavLink">Logout</NavLink>
+
         </div>
     }
 
